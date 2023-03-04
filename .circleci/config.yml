@@ -16,9 +16,9 @@ jobs:
       - checkout
       - run:
           name: "Write in output"
-          command: echo "text to output here by Shaimaa Shalaby" > ~/circle_ci_workspace/output.txt 
+          command: echo "text to output here by Shaimaa Shalaby" > ~/output.txt 
       - persist_to_workspace:
-          root: ~/circle_ci_workspace
+          root: ~/
           paths:
             - output.txt
 
@@ -27,8 +27,8 @@ jobs:
       - image: cimg/base:stable
     steps:
       - attach_workspace:
-          at: ~/circle_ci_workspace
-      - run: cat  ~/circle_ci_workspace/output.txt
+          at: ~/
+      - run: cat  ~/output.txt
         
 
 
