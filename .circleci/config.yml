@@ -38,3 +38,6 @@ workflows:
   Test-sharing-workflow:
     jobs:
       - save_hello_world_output
+      - print-from-workspace:
+          requires:
+            - save_hello_world_output
