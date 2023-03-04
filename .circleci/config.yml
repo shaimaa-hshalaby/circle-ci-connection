@@ -18,16 +18,10 @@ jobs:
           name: "Say hello"
           command: return 1
 
-  run_when_failed:
-    docker:
-      - image: cimg/base:stable
-
-    steps:
       - run: 
           name: "when_failed_command"
           command: "echo the the project is failed"
           when: on_fail
-    
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
