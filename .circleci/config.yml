@@ -2,19 +2,10 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-commands:
-  print_workflow_id:
-    description: "Printing workflow ID"
-    parameters:
-      id:
-        type: string
-    steps:
-      - run: "echo workflow id is << parameters.id >>"
-
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  save_hello_world_output:
+  failed_job:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
@@ -23,32 +14,21 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
-      - print_workflow_id:
-          id: $CIRCLE_WORKFLOW_ID
       - run:
-          name: "Write in output"
-          command: echo "text to output here by Shaimaa Shalaby" > ~/output.txt 
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - output.txt
+          name: "Say hello"
+          command: return 1
 
-  print-from-workspace:
+  run_when_failed:
     docker:
       - image: cimg/base:stable
     steps:
-      - attach_workspace:
-          at: ~/
-      - run: cat  ~/output.txt
-        
-
-
+      - run:
+          name: "run when fail"
+          command: "echo the job faileeeed"
+          when: on_fail
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  Test-sharing-workflow:
+  say-hello-workflow:
     jobs:
-      - save_hello_world_output
-      - print-from-workspace:
-          requires:
-            - save_hello_world_output
+      - failed_job
